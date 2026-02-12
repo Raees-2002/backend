@@ -15,6 +15,14 @@ app.get("/", (req, res) => {
   res.send("new deployment applied ");
 });
 
+app.get("/version", (req, res) => {
+  res.json({
+    version: process.env.VERSION,
+    pid: process.pid
+  });
+});
+
+
 
 // health check route (for deployment validation)
 app.get("/health", (req, res) => {
