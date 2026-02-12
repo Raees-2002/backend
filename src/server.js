@@ -26,9 +26,9 @@ app.get("/version", (req, res) => {
 
 // health check route (for deployment validation)
 app.get("/health", (req, res) => {
-  res.status(200).json({
-    status: "ok",
-    message: "application is running",
+  res.status(500).json({
+    status: "failed",
+    message: "application is not running",
     version: VERSION,
     time: new Date().toISOString()
   });
