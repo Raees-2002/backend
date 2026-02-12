@@ -21,9 +21,9 @@ jobs:
       - name: install dependencies
         run: npm ci
 
-      # ✅ safe artifact creation (no tar conflict)
+      # ✅ create artifact using zip (safe)
       - name: create artifact
-        run: tar -czf app.tar.gz -C . .
+        run: zip -r app.zip . -x "*.git*"
 
       - name: copy artifact to ec2
         uses: appleboy/scp-action@v0.1.7
@@ -31,7 +31,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_KEY }}
-          source: app.tar.gz
+          source: app.zip
           target: /tmp/
 
       - name: deploy on ec2
