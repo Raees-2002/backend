@@ -12,7 +12,7 @@ app.use(express.json());
 
 // root route
 app.get("/", (req, res) => {
-  res.send("new deployment applied ");
+  res.send("the new version has been deployed");
 });
 
 app.get("/version", (req, res) => {
