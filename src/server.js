@@ -12,7 +12,7 @@ app.use(express.json());
 
 // root route
 app.get("/", (req, res) => {
-  res.send("api running");
+  res.send("api running version");
 });
 
 
