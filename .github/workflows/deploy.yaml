@@ -10,55 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # -----------------------------
-      # checkout repository
-      # -----------------------------
       - name: checkout code
         uses: actions/checkout@v4
 
-
-      # -----------------------------
-      # setup node
-      # -----------------------------
       - name: setup node
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-
-      # -----------------------------
-      # install dependencies
-      # -----------------------------
       - name: install dependencies
         run: npm ci
 
-
-      # -----------------------------
-      # create artifact (IMPORTANT)
-      # create OUTSIDE root to avoid tar error
-      # -----------------------------
+      # ✅ safe artifact creation (no tar conflict)
       - name: create artifact
-        run: |
-          mkdir build
-          tar -czf build/app.tar.gz -C . .
+        run: tar -czf app.tar.gz -C . .
 
-
-      # -----------------------------
-      # copy artifact to ec2
-      # -----------------------------
       - name: copy artifact to ec2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_KEY }}
-          source: build/app.tar.gz
+          source: app.tar.gz
           target: /tmp/
 
-
-      # -----------------------------
-      # deploy on ec2
-      # -----------------------------
       - name: deploy on ec2
         uses: appleboy/ssh-action@v1.0.3
         with:
